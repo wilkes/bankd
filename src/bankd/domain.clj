@@ -1,5 +1,5 @@
 (ns bankd.domain
-  (:use [bankd.core :only [apply-event should-exist]]))
+  (:use [bankd.core :only [apply-event should exist]]))
 
 (defrecord Client [])
 
@@ -17,6 +17,6 @@
   (assoc this :name (-> event :data :name)))
 
 (defn change-name [client name]
-  (should-exist client)
+  (should exist client)
   (apply-event client changed-name {:client-uid (:uid client)
                                     :name name})  )
