@@ -10,8 +10,8 @@
            :account-uids []
            :card-numbers [])))
 
-(defn create-client []
-  (apply-event (Client.) client-created nil))
+(defn create-client [params]
+  (apply-event (Client.) client-created params))
 
 (defn changed-name [this event]
   (assoc this :name (-> event :data :name)))

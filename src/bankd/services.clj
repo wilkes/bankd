@@ -3,7 +3,7 @@
   (:require [bankd.commands :as cmd]))
 
 (defn create-client [params]
-  (execute-command cmd/create-client))
+  (execute-command cmd/create-client params))
 
 (defn name-client [params]
   (execute-command cmd/name-client (:id params) (:name params)))
