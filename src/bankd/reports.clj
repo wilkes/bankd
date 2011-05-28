@@ -1,19 +1,21 @@
 (ns bankd.reports
-  (:use [bankd.core :only [update-report]]))
+  (:use [bankd.core :only [create-report
+                           update-report
+                           add-subscriber]]))
 
 (defrecord ClientDetailsReport [])
 
-(defmulti on :name)
+(defn create-client-details-report [event]
+  (create-report ClientDetailsReport
+                 (merge {:uid (:aggregate-uid event)}
+                        (select-keys (:data event)
+                                     [:name :street :postal-code
+                                      :city :phone-number]))))
+(add-subscriber 'client-created create-client-details-report)
 
-(defmethod on 'client-created
-  [event]
+(defn update-client-details-name [event]
   (update-report ClientDetailsReport
-                 (select-keys (:data event)
-                              [:name :street :postal-code
-                               :city :phone-number :uid])))
-
-(defmethod on 'changed-name
-  [event]
-  (update-report ClientDetailsReport
-                 (select-keys (:data event)
-                              [:uid :name])))
+                 (merge {:uid (:aggregate-uid event)}
+                         (select-keys (:data event)
+                                      [:uid :name]))))
+(add-subscriber 'changed-name update-client-details-name)
