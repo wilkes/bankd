@@ -1,7 +1,6 @@
 (ns bankd.reports
-  (:use [bankd.core :only [create-report
-                           update-report
-                           add-subscriber]]))
+  (:use [bankd.reporting :only [create-report update-report]]
+        [bankd.event-bus :only [add-subscriber]]))
 
 (defrecord ClientDetailsReport [])
 
@@ -18,4 +17,4 @@
                  (merge {:uid (:aggregate-uid event)}
                          (select-keys (:data event)
                                       [:uid :name]))))
-(add-subscriber 'changed-name update-client-details-name)
+(add-subscriber 'name-changed update-client-details-name)

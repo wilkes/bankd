@@ -1,6 +1,8 @@
 (ns bankd.event-bus
   (require [lamina.core :as lamina]))
 
+(declare *event-bus*)
+
 (defprotocol EventBus
   (publish [this event])
   (subscribe [this event-name handler]))
@@ -16,3 +18,11 @@
 
 (defn in-process-bus []
   (lamina/channel))
+
+(def *event-bus* (in-process-bus))
+
+(defn add-subscriber [event-name subscriber]
+  (subscribe *event-bus* event-name subscriber))
+
+(defn publish-event [event]
+  (publish *event-bus* event))

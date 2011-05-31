@@ -1,5 +1,5 @@
 (ns bankd.services
-  (:use [bankd.core :only [execute-command]])
+  (:use [bankd.command-bus :only [execute-command]])
   (:require [bankd.commands :as cmd]))
 
 (defn create-client [params]

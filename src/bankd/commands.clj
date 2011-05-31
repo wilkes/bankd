@@ -1,5 +1,5 @@
 (ns bankd.commands
-  (:use [bankd.core :only [fetch-by-id]])
+  (:use [bankd.event-storage :only [fetch-by-id]])
   (:require [bankd.domain :as dom])
   (:import [bankd.domain Client]))
 
