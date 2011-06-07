@@ -3,13 +3,13 @@
 (def *event-log* (atom {}))
 
 (defn- fetch-aggregate [event-log id]
-  (get event-log id {:uid id
+  (get event-log id {:id id
                      :version 0
                      :snapshot {}
                      :events []}))
 
 (defn commit [event-log event]
-  (let [id (:aggregate-uid event)
+  (let [id (:aggregate-id event)
         aggregate (fetch-aggregate event-log id)
         updated-aggregate (assoc aggregate
                             :version (:version event)
@@ -18,7 +18,7 @@
 
 (defn event-versions [events]
   (let [versions (reduce (fn [result event]
-                           (conj result [(:aggregate-uid event)
+                           (conj result [(:aggregate-id event)
                                          (:originating-version event)]))
                          [] events)]
     (set versions)))
@@ -40,5 +40,5 @@
   (reduce (fn [obj event]
             (let [f (ns-resolve (:ns event) (:name event))]
               (assoc (f obj event) :version (:version event))))
-          ^{:type type-var} {}
+          (. type-var newInstance)
           (get-in @*event-log* [id :events])))

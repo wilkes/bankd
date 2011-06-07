@@ -2,22 +2,12 @@
 
 (def *reports* (atom {}))
 
-(defn create-report [type data]
-  (let [do-create (fn [reports]
-                    (let [type-reports (get reports type {})]
-                      (assoc reports type
-                             (assoc type-reports (:uid data) data))))]
-    (swap! *reports* do-create)))
-
-(defn update-report [type new-data]
-  (let [do-update (fn [reports]
-                    (let [id (:uid new-data)
-                          type-reports (get reports type {})
-                          old-data (type-reports id)
-                          new-data (merge old-data new-data)]
-                      (assoc reports type
-                             (assoc type-reports id new-data))))]
-    (swap! *reports* do-update)))
+(defn update-report [type event & keys]
+  (let [data (merge {:id (:aggregate-id event)
+                     :version (:version event)}
+                    (select-keys (:data event) keys))]
+    (swap! *reports*
+           #(update-in % [(pr-str type) (:id data)] merge data))))
 
 (defn find-report-by-id [type id]
-  (get-in @*reports* [type id]))
+  (get-in @*reports* [(pr-str type) id]))

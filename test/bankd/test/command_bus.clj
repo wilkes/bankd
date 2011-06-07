@@ -1,5 +1,5 @@
 (ns bankd.test.command-bus
-  (:use bankd.command-bus
+  (:use bankd.command-bus :reload-all
         midje.sweet))
 
 (facts "execute-command"

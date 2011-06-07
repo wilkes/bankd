@@ -1,11 +1,12 @@
 (ns bankd.test.services
-  (:use bankd.services
+  (:use bankd.services :reload
+        [bankd.env :only [reset-env!]]
         midje.sweet))
 
-;.;. When someone asks you if you're a god, you say 'YES'! -- Zeddemore
+(background
+ (before :contents (reset-env!)))
+
 (fact "name-client increments the version of the client"
-  (background
-   (around :facts (let [id (:uid (create-client {:name .old-name.}))] ?form)))
-  (name-client {:id id :version 1 :name .new-name.}) => (contains {:uid id
-                                                                   :version 2
-                                                                   :name .new-name.}))
+  (let [id (:id (create-client {:name .old-name.}))]
+    (name-client {:id id :version 1 :name .new-name.})
+    => (contains {:id id :version 2 :name .new-name.})))

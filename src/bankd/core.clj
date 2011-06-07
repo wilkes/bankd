@@ -1,10 +1,7 @@
 (ns bankd.core)
 
-(defn uuid [instance]
-  (merge {:uid (str (java.util.UUID/randomUUID))} instance))
-
 (defn exist [o]
-  (not (nil? (:uid o))))
+  (not (nil? (:id o))))
 
 (defn should [f? o]
   (when-not (f? o)

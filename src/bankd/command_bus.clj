@@ -1,8 +1,11 @@
 (ns bankd.command-bus
-  (:use [bankd.core :only [uuid]]
-        [bankd.event-storage :only [save-events]]
+  (:use [bankd.event-storage :only [save-events]]
         [bankd.event-bus :only [publish-event]]))
+
 (declare *domain-repository*)
+
+(defn uuid [instance]
+  (merge {:id (str (java.util.UUID/randomUUID))} instance))
 
 (defn domain-repository-events []
   @*domain-repository*)
@@ -36,7 +39,7 @@
                         :version (-> aggregate :version inc))]
         (add-event-to-domain-repository!
          (assoc event
-           :aggregate-uid (:uid aggregate)
+           :aggregate-id (:id aggregate)
            :originating-version originating-version
            :version (:version aggregate)))
         aggregate)))

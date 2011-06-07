@@ -7,8 +7,8 @@
 (defn client-created [this event]
   (merge (:data event)
          (assoc this
-           :uid (:uid event)
-           :account-uids []
+           :id (:id event)
+           :account-ids []
            :card-numbers [])))
 
 (defn create-client [params]
@@ -20,5 +20,5 @@
 (defn change-name [client version name]
   (should exist client)
   (apply-event! client version changed-name
-                {:client-uid (:uid client)
+                {:client-id (:id client)
                  :name name}))
