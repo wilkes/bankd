@@ -4,7 +4,6 @@
         [bankd.reports :only [set-subscriptions]]))
 
 (defn reset-env! []
-  (println "Reseting env")
   (swap! *event-log* (constantly {}))
   (in-process-bus)
   (set-subscriptions))

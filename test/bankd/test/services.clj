@@ -4,9 +4,20 @@
         midje.sweet))
 
 (background
- (before :contents (reset-env!)))
+ (around :facts (do (reset-env!)
+                    ?form)))
 
-(fact "name-client increments the version of the client"
-  (let [id (:id (create-client {:name .old-name.}))]
-    (name-client {:id id :version 1 :name .new-name.})
-    => (contains {:id id :version 2 :name .new-name.})))
+(against-background
+  [(around :facts (let [id (:id (create-client {:name .name.}))]
+                    ?form))]
+
+ (fact "name-client increments the version of the client"
+   (name-client {:id id :version 1 :name .new-name.})
+   => (contains {:id id :version 2 :name .new-name.}))
+
+ (fact "show client"
+   (show-client {:id id}) => (contains {:id id :version 1 :name .name.}))
+
+ (fact "show updated client"
+   (name-client {:id id :version 1 :name .new-name.})
+   (show-client {:id id}) => (contains {:id id :version 2 :name .new-name.})))

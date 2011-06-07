@@ -16,5 +16,5 @@
   (find-report-by-id ClientDetailsReport id))
 
 (defn set-subscriptions []
-  (add-subscriber 'name-changed update-client-details-name)
-  (add-subscriber 'client-created create-client-details-report))
+  (add-subscriber 'client-created create-client-details-report)
+  (add-subscriber 'changed-name update-client-details-name))
