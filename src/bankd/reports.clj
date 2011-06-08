@@ -5,19 +5,19 @@
 (defrecord ClientReport [])
 (defrecord ClientDetailsReport [])
 
-(defn create-client-report [event]
-  (update-report ClientReport event :name :city))
+(add-subscriber 'client-created
+                #(update-report ClientReport % :name :city))
 
-(defn update-client-name [event]
-  (update-report ClientReport event :name))
+(add-subscriber 'changed-name
+                #(update-report ClientReport % :name))
 
-(defn create-client-details-report [event]
-  (update-report ClientDetailsReport event
-                 :name :street :postal-code
-                 :city :phone-number))
+(add-subscriber 'client-created
+                #(update-report ClientDetailsReport %
+                                :name :street :postal-code
+                                :city :phone-number))
 
-(defn update-client-details-name [event]
-  (update-report ClientDetailsReport event :name))
+(add-subscriber 'changed-name
+                #(update-report ClientDetailsReport % :name))
 
 (defn show-client [id]
   (find-report-by-id ClientDetailsReport id))
@@ -25,8 +25,3 @@
 (defn list-clients []
   (find-all ClientReport))
 
-(defn set-subscriptions []
-  (add-subscriber 'client-created create-client-report)
-  (add-subscriber 'changed-name update-client-name)
-  (add-subscriber 'client-created create-client-details-report)
-  (add-subscriber 'changed-name update-client-details-name))

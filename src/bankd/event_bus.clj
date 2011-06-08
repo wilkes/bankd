@@ -2,6 +2,7 @@
   (require [lamina.core :as lamina]))
 
 (defonce *event-bus* (atom nil))
+(defonce *subscriptions* (atom #{}))
 
 (defprotocol EventBus
   (publish [this event])
@@ -17,10 +18,13 @@
                         handler)))
 
 (defn in-process-bus []
-  (swap! *event-bus* lamina/channel))
+  (swap! *event-bus* lamina/channel)
+  (doseq [[event-name subscriber] @*subscriptions*]
+    (subscribe @*event-bus* event-name subscriber)))
+
 
 (defn add-subscriber [event-name subscriber]
-  (subscribe @*event-bus* event-name subscriber))
+  (swap! *subscriptions* conj [event-name subscriber]))
 
 (defn publish-event [event]
   (publish @*event-bus* event))
