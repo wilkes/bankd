@@ -1,6 +1,7 @@
 (ns bankd.test.services
-  (:use bankd.services :reload
+  (:use bankd.services
         [bankd.env :only [reset-env!]]
+
         midje.sweet))
 
 (background
@@ -20,4 +21,11 @@
 
  (fact "show updated client"
    (name-client {:id id :version 1 :name .new-name.})
-   (show-client {:id id}) => (contains {:id id :version 2 :name .new-name.})))
+   (show-client {:id id}) => (contains {:id id :version 2 :name .new-name.}))
+
+ (fact "list clients"
+   (count (list-clients nil)) => 1
+   (create-client {:name .another.})
+   (count (list-clients nil)) => 2
+   (name-client {:id id :version 1 :name .new-name.})
+   (count (list-clients nil)) => 2))

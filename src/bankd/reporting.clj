@@ -1,6 +1,6 @@
 (ns bankd.reporting)
 
-(def *reports* (atom {}))
+(defonce *reports* (atom {}))
 
 (defn update-report [type event & keys]
   (let [data (merge {:id (:aggregate-id event)
@@ -11,3 +11,6 @@
 
 (defn find-report-by-id [type id]
   (get-in @*reports* [(pr-str type) id]))
+
+(defn find-all [type]
+  (vals (get @*reports* (pr-str type))))

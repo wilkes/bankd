@@ -1,7 +1,7 @@
 (ns bankd.event-bus
   (require [lamina.core :as lamina]))
 
-(def *event-bus* (atom nil))
+(defonce *event-bus* (atom nil))
 
 (defprotocol EventBus
   (publish [this event])

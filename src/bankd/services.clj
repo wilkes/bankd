@@ -11,3 +11,6 @@
 
 (defn show-client [params]
   (reports/show-client (:id params)))
+
+(defn list-clients [params]
+  (reports/list-clients))
