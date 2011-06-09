@@ -28,4 +28,6 @@
    (create-client {:name .another.})
    (count (list-clients nil)) => 2
    (name-client {:id id :version 1 :name .new-name.})
-   (count (list-clients nil)) => 2))
+   (count (list-clients nil)) => 2
+   (list-clients nil) => (contains [(contains {:version 1 :name .another.})
+                                    (contains {:version 2 :name .new-name.})] :in-any-order)))
