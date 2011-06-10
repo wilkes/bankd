@@ -1,6 +1,6 @@
-(ns bankd.domain
-  (:use [bankd.core :only [should exist]]
-        [bankd.command-bus :only [apply-event!]]))
+(ns bankd.app.domain
+  (:use [bankd.support.core :only [should exist]]
+        [bankd.support.command-bus :only [apply-event!]]))
 
 (defrecord Client [])
 

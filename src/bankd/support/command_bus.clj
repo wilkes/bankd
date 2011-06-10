@@ -1,6 +1,6 @@
-(ns bankd.command-bus
-  (:use [bankd.event-storage :only [save-events]]
-        [bankd.event-bus :only [publish-event]]))
+(ns bankd.support.command-bus
+  (:use [bankd.support.event-storage :only [save-events]]
+        [bankd.support.event-bus :only [publish-event]]))
 
 (declare *domain-repository*)
 
@@ -28,18 +28,22 @@
   (with-domain-repository
     (apply cmd args)))
 
+(defn- make-event [event-handler originating-version attributes]
+  (uuid {:name (:name (meta event-handler))
+                         :ns (:ns (meta event-handler))
+                         :originating-version originating-version
+                         :data attributes}))
+
 (defn apply-event!
   ([aggregate event-handler attributes]
      (apply-event! (assoc aggregate :version 0) 0 event-handler attributes))
+
   ([aggregate originating-version event-handler attributes]
-      (let [event (uuid {:name (:name (meta event-handler))
-                         :ns (:ns (meta event-handler))
-                         :data attributes})
+      (let [event (make-event event-handler originating-version attributes)
             aggregate (assoc (event-handler aggregate event)
                         :version (-> aggregate :version inc))]
         (add-event-to-domain-repository!
          (assoc event
            :aggregate-id (:id aggregate)
-           :originating-version originating-version
            :version (:version aggregate)))
         aggregate)))

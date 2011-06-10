@@ -1,6 +1,6 @@
-(ns bankd.reports
-  (:use [bankd.reporting :only [update-report find-report-by-id find-all]]
-        [bankd.event-bus :only [add-subscriber]]))
+(ns bankd.app.reports
+  (:use [bankd.support.reporting :only [update-report find-report-by-id find-all]]
+        [bankd.support.event-bus :only [add-subscriber]]))
 
 (defrecord ClientReport [])
 (defrecord ClientDetailsReport [])

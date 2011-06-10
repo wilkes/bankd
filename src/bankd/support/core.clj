@@ -1,4 +1,4 @@
-(ns bankd.core)
+(ns bankd.support.core)
 
 (defn exist [o]
   (not (nil? (:id o))))

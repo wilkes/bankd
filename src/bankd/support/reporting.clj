@@ -1,4 +1,4 @@
-(ns bankd.reporting)
+(ns bankd.support.reporting)
 
 (defonce *reports* (atom {}))
 

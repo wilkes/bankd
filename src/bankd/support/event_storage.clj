@@ -1,4 +1,4 @@
-(ns bankd.event-storage)
+(ns bankd.support.event-storage)
 
 (def *event-log* (atom {}))
 

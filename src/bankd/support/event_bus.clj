@@ -1,4 +1,4 @@
-(ns bankd.event-bus
+(ns bankd.support.event-bus
   (require [lamina.core :as lamina]))
 
 (defonce *event-bus* (atom nil))

@@ -1,7 +1,6 @@
 (ns bankd.test.services
-  (:use bankd.services
-        [bankd.env :only [reset-env!]]
-
+  (:use bankd.app.services
+        [bankd.support.env :only [reset-env!]]
         midje.sweet))
 
 (background
